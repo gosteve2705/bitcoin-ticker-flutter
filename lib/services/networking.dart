@@ -16,6 +16,7 @@ class NetworkHelper {
       return jsonDecode(data);
     } else {
       print(response.statusCode);
+      throw 'Problem with the get request';
     }
   }
 }

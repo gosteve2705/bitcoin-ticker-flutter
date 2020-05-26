@@ -16,7 +16,7 @@ class _PriceScreenState extends State<PriceScreen> {
   int btc = 0;
   int eth = 0;
   int ltc = 0;
-
+// dropdownbutton widget for android
   DropdownButton<String> androidDropdown() {
     List<DropdownMenuItem<String>> dropDownItems = [];
     for (String currency in currenciesList) {
@@ -29,12 +29,14 @@ class _PriceScreenState extends State<PriceScreen> {
 
     return DropdownButton<String>(
       value: selectedCurrency,
+      //gets selected currency from the dropdown item in android and passes its value to the 3 methods in coinData class which gets btc ,eth and ltc data
       onChanged: (value) async {
         selectedCurrency = value;
         var btcData = await coinData.getBtcData(selectedCurrency);
         var ethData = await coinData.getEthData(selectedCurrency);
         var ltcData = await coinData.getLtcData(selectedCurrency);
         setState(() {
+          //once the data is gotten back from the methods above they are passed to the update ui method
           updateUi(btcData: btcData, ethData: ethData, ltcData: ltcData);
         });
       },
@@ -42,6 +44,7 @@ class _PriceScreenState extends State<PriceScreen> {
     );
   }
 
+//cupertino picker for ios
   CupertinoPicker iosPicker() {
     List<Text> pickerItems = [];
     for (String currency in currenciesList) {
@@ -52,12 +55,14 @@ class _PriceScreenState extends State<PriceScreen> {
       backgroundColor: Colors.lightBlue,
       itemExtent: 30,
       onSelectedItemChanged: (selectedIndex) async {
+        //gets selected currency from the cupertino picker in ios and passes its value to the 3 methods in coinData class which gets btc ,eth and ltc data
         selectedCurrency = currenciesList[selectedIndex];
 
         var btcData = await coinData.getBtcData(selectedCurrency);
         var ethData = await coinData.getEthData(selectedCurrency);
         var ltcData = await coinData.getLtcData(selectedCurrency);
         setState(() {
+          //once the data is gotten back from the methods above they are passed to the update ui method
           updateUi(btcData: btcData, ethData: ethData, ltcData: ltcData);
         });
       },
@@ -67,10 +72,11 @@ class _PriceScreenState extends State<PriceScreen> {
 
   void updateUi({dynamic btcData, dynamic ethData, dynamic ltcData}) {
     setState(() {
+      //check to make sure the data passed in is not null if its null exit with a retuen statement
       if (btcData == null || ethData == null || ltcData == null) {
         return;
       }
-
+      //else if there is data decode the data  and extract the btc,ltc and eth rate from the json response
       var btcRate = btcData['rate'];
       var ethRate = ethData['rate'];
       var ltcRate = ltcData['rate'];
